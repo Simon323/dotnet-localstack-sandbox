@@ -14,6 +14,7 @@ namespace Localstack.S3.Services
         Task PutObject(string bucketName, string key, string body);
         Task StartUpload(string bucketName, string key);
         Task CompleteUpload();
+        Task DeleteObjects(string bucketName);
     }
 
     public class AmazonS3Service : IAmazonS3Service
@@ -25,9 +26,20 @@ namespace Localstack.S3.Services
             this._client = client;
         }
 
-        public Task CompleteUpload()
+        public async Task CompleteUpload()
         {
-            throw new NotImplementedException();
+            var fileTransferUtility = new TransferUtility(this._client);
+
+            TransferUtilityUploadDirectoryRequest request = new TransferUtilityUploadDirectoryRequest
+            {
+                BucketName = "yourbucket",
+                Directory = "C:\\lab\\docker\\docker-containers\\localstack-s3\\local_folder",
+                SearchOption = System.IO.SearchOption.AllDirectories,
+                CannedACL = S3CannedACL.PublicRead
+            };
+
+            await fileTransferUtility.UploadDirectoryAsync(request);
+
         }
 
         public async Task CreateBucket(string bucketName)
@@ -38,6 +50,45 @@ namespace Localstack.S3.Services
             });
 
             Console.WriteLine(res.HttpStatusCode);
+        }
+
+        public async Task DeleteObjects(string bucketName)
+        {
+            try
+            {
+                var list = Enumerable.Range(0, 20000).Select(x => new KeyVersion { Key = $"file_x{x}.txt" }).ToList();
+
+                DeleteObjectsRequest multiObjectDeleteRequest = new DeleteObjectsRequest
+                {
+                    BucketName = bucketName,
+                    Objects = list
+                };
+                // You can add specific object key to the delete request using the .AddKey.
+                // multiObjectDeleteRequest.AddKey("TickerReference.csv", null);
+                DeleteObjectsResponse response = await this._client.DeleteObjectsAsync(multiObjectDeleteRequest);
+
+                Console.WriteLine("Successfully deleted all the {0} items", response.DeletedObjects.Count);
+            }
+            catch (DeleteObjectsException e)
+            {
+                PrintDeletionErrorStatus(e);
+            }
+        }
+
+        private static void PrintDeletionErrorStatus(DeleteObjectsException e)
+        {
+            // var errorResponse = e.ErrorResponse;
+            DeleteObjectsResponse errorResponse = e.Response;
+            Console.WriteLine("x {0}", errorResponse.DeletedObjects.Count);
+
+            Console.WriteLine("No. of objects successfully deleted = {0}", errorResponse.DeletedObjects.Count);
+            Console.WriteLine("No. of objects failed to delete = {0}", errorResponse.DeleteErrors.Count);
+
+            Console.WriteLine("Printing error data...");
+            foreach (DeleteError deleteError in errorResponse.DeleteErrors)
+            {
+                Console.WriteLine("Object Key: {0}\t{1}\t{2}", deleteError.Key, deleteError.Code, deleteError.Message);
+            }
         }
 
         public async Task ListBuckets()
@@ -82,7 +133,7 @@ namespace Localstack.S3.Services
                 ContentBody = body
             });
 
-            Console.WriteLine(res.HttpStatusCode);
+            //Console.WriteLine(res.HttpStatusCode);
         }
 
         public async Task ReadTxtFile(string bucketName, string key)

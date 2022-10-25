@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localstack.S3.Console", "Lo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Localstack.S3", "Localstack.S3\Localstack.S3.csproj", "{AD881791-9CBC-40BD-B63F-CDD91C7B9F95}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sabdbox", "sabdbox", "{307C650F-1FDF-4985-A433-09469DC1BB71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localstack.Sandbox.Console", "Localstack.Sandbox.Console\Localstack.Sandbox.Console.csproj", "{1A4FFAA7-062B-4FB4-A728-C8D6AAB18102}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,10 @@ Global
 		{AD881791-9CBC-40BD-B63F-CDD91C7B9F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD881791-9CBC-40BD-B63F-CDD91C7B9F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD881791-9CBC-40BD-B63F-CDD91C7B9F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A4FFAA7-062B-4FB4-A728-C8D6AAB18102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A4FFAA7-062B-4FB4-A728-C8D6AAB18102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A4FFAA7-062B-4FB4-A728-C8D6AAB18102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A4FFAA7-062B-4FB4-A728-C8D6AAB18102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C29E791B-E30C-4445-B69B-1CE502204BB2} = {D74AB669-62C3-4325-831A-CD3EDD068E16}
 		{AD881791-9CBC-40BD-B63F-CDD91C7B9F95} = {D74AB669-62C3-4325-831A-CD3EDD068E16}
+		{1A4FFAA7-062B-4FB4-A728-C8D6AAB18102} = {307C650F-1FDF-4985-A433-09469DC1BB71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {93F42B6D-4F79-42F7-9FB8-2093278AA548}
